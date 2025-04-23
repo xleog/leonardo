@@ -1,6 +1,4 @@
-$(document).ready(function() {
-   llenarempresa();
-});
+
 var Español={
     "sProcessing":     "Procesando...",
                   "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -29,6 +27,31 @@ var Español={
                   }
   }
 
+  
+  function abrir_modal_template() {
+
+    $('#mdlcambio').modal('show');
+
+}
+
+  if (codalmacen == 'NL'){
+    abrir_modal_template();
+  };
+
+  $(document).ready(function() {
+    llenarempresa();
+ });
+ $("#cmbempresas").change(function () {
+   var empresaSeleccionada = $(this).val();
+   llenarSucursal(empresaSeleccionada);
+ });
+ $("#cmbsucursal").change(function () {
+   var sucursalSeleccionada = $(this).val();
+   llenarAlmacen(sucursalSeleccionada);
+ });
+
+
+
   function llenarempresa() {
     var url=URL_PY+ 'cambio/empresa';
   
@@ -39,7 +62,7 @@ var Español={
         success: function(response) {
           //console.log(response)
           if (response.success) {
-            const empresaSelect = $('#cmbempresa');
+            const empresaSelect = $('#cmbempresas');
             empresaSelect.empty(); // Limpia el select existente
     
             // Llena el select con las sucursales
@@ -82,10 +105,10 @@ var Español={
     
             // Llenar almacén basado en la primera sucursal
             llenarAlmacen(sucursalSelect.val());
+            
           } else {
             alert('No hay sucursales');
           }
-          llenarempresa();
         },
         error: function(jqXHR, textStatus) {
           console.log('Error: ' + textStatus);
@@ -93,9 +116,9 @@ var Español={
       });
   }
   function llenarAlmacen(id) {
-    var url=URL_PY+ 'login/almxsucursallg';
+    var url=URL_PY+ 'cambio/almacen';
       $.ajax({
-        type: "GET",
+        type: "POST",
         url: url,
         data: { id },
         dataType: "json",
@@ -114,13 +137,40 @@ var Español={
           } else {
             alert('No hay almacenes');
           }
-          llenarSucursal();
         },
         error: function(jqXHR, textStatus) {
           console.log('Error: ' + textStatus);
         }
       });
   }
+
+  function cambio_empresa() {
+    var empresa = $('#cmbempresas').val();
+    var sucursal = $('#cmbsucursal').val();
+    var almacen = $('#cmbalmacen').val();
+    var url=URL_PY+ 'cambio/ingresar';
+  
+    var parametros = 'idempresa=' + empresa +
+      '&idsucursal=' + sucursal + '&idalmacen=' + almacen;
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: parametros,
+      success: function (response) {
+        //console.log(response);
+        if (response.mensaje) {
+          Swal.fire({
+            icon: "error",
+            title: "INICIO DE SESION",
+            text: response.mensaje
+          });
+        } else {
+          window.location.href = 'dashboard';
+        }
+      }
+    });
+  }
+
   function actualizar_password() {
     var nuevaClave=$('#txtclave').val();
     const url=URL_PY+'cambio/clave';
@@ -318,13 +368,3 @@ var Español={
     
   }(jQuery, window));
 
-
-  function abrir_modal_template() {
-
-    $('#mdltemplate').modal('show');
-
-}
-
-  if (codalmacen = "<?= session()->get('codigoalmacen') ?? 'NL' ?>"){
-    abrir_modal_template();
-  };

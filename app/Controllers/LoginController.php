@@ -35,11 +35,11 @@ class LoginController extends Controller
     public function logueo_ingreso()
     {
 
-        $actual = date("Y-m-d");
+        //$actual = date("Y-m-d");
         $clave = $this->request->getPost('pssw');
-        $empresa = $this->request->getPost('idemp');
-        $sucursal = $this->request->getPost('idsu');
-        $almacen = $this->request->getPost('idalm');
+       // $empresa = $this->request->getPost('idemp');
+      //  $sucursal = $this->request->getPost('idsu');
+       // $almacen = $this->request->getPost('idalm');
         $usuario = $this->request->getPost('idusu');
         try {
             $usuarioModel = new UsuarioModel();
@@ -47,7 +47,7 @@ class LoginController extends Controller
             // Verifica el usuario y la contraseña
             $userData = $usuarioModel->getUser($usuario, $clave); // Implementa este método en tu modelo
             
-            //log_message('error', 'Datos recibidos: ' . json_encode($userData));
+           // log_message('error', 'Datos recibidos: ' . json_encode($userData));
 
             if ($userData) {
                 // Si se encontró el usuario, verifica el acceso
@@ -61,28 +61,28 @@ class LoginController extends Controller
                         //log_message('error','Entro aqui');
                         // Almacena en sesión los datos necesarios
                         session()->set([
-                            /* 'codempresa' => $empresa,
-                            'rucempresa' => $accessData->ruc,
-                            'codsucursal' => $sucursal,
-                            'nombresucursal' => $accessData->descripcion,
-                            'nombrealmacen' => $accessData->descripcion_alm, */
+                           //  'codempresa' => $empresa,
+                           //'rucempresa' => $accessData->ruc,
+                          //  'codsucursal' => $sucursal,
+                          //  'nombresucursal' => $accessData->descripcion,
+                          //  'nombrealmacen' => $accessData->descripcion_alm, 
                             'nombreusuario' => $accessData->nombre,
                             'nombreusuariocorto' => $userData['usuario'],
-                           /*  'nombrempresa' => $accessData->datempresa,
-                            'ubigeoempresa' => $accessData->ubigeo,
-                            'nempresa' => $accessData->nempresa,
-                            'dirempresa' => $accessData->dir_empresa,
-                            'usol' => $accessData->usuario_sol,
-                            'clavesol' => $accessData->clavesol, */
+                            //'nombrempresa' => $accessData->datempresa,
+                           // 'ubigeoempresa' => $accessData->ubigeo,
+                           // 'nempresa' => $accessData->nempresa,
+                           // 'dirempresa' => $accessData->dir_empresa,
+                           // 'usol' => $accessData->usuario_sol,
+                           // 'clavesol' => $accessData->clavesol, 
                             'usuario' => $userData['idusuarios'],
-                           'codigoalmacen' => $almacen,
+                          //  'codigoalmacen' => $almacen,
                             'password' => $clave,
                             'perfil' => $accessData->perfil,                           
-                            /* 'n_empresa' => $accessData->nempresa,
-                            'modofe' => $accessData->modo_ft_notas,
-                            'modoguias' => $accessData->modo_guias,
-                            'clientid' => $accessData->clientid,
-                            'passid' => $accessData->passid, */
+                           // 'n_empresa' => $accessData->nempresa,
+                          //  'modofe' => $accessData->modo_ft_notas,
+                          //  'modoguias' => $accessData->modo_guias,
+                          //  'clientid' => $accessData->clientid,
+                         //   'passid' => $accessData->passid, 
                             'urls' => $url_x_perfil,
                             'is_logged' => true
                         ]);
@@ -93,13 +93,13 @@ class LoginController extends Controller
                     }
                 
             
-          else {
+                 } else {
                 return $this->response->setJSON([
                     'success' => false,
                     'mensaje' => 'Usuario o Clave Incorrecto'
                 ]);
             }
-        }
+        
     
         } catch (\Exception $e) {
             return json_encode(['error' => ['text' => $e->getMessage()]]);

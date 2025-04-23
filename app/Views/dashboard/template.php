@@ -39,31 +39,46 @@
 						<div class="col">
 							<!-- Page pre-title -->
 							<div class="page-pretitle">
-								Overview
+								By @zleonxrdo_
 							</div>
+
 							<h2 class="page-title">
-							<?= $this->renderSection('titulo'); ?>
+								<?= $this->renderSection('titulo'); ?>
 							</h2>
+							<div class="col-sm-12">
+								<ol class="breadcrumb float-sm-right">
+									<li class="breadcrumb-item active"><i class="fa-solid fa-building"></i>
+										<?php echo $_SESSION['empresa'] ?></li>
+									<li class="breadcrumb-item active"><i class="fa-solid fa-industry"></i>
+										<?php echo $_SESSION['sucursal'] ?></li>
+									<li class="breadcrumb-item active"><i class="fa-solid fa-warehouse"></i>
+										<?php echo $_SESSION['almacen']; ?></li>
+								</ol>
+							</div>
 						</div>
+
 						<!-- Page title actions -->
 						<div class="col-auto ms-auto d-print-none">
 							<div class="btn-list">
 
-                                <!-- Botón de Opciones -->
-                                <button  class="btn btn-dark btn-5 d-none d-sm-inline-block" onclick="abrir_modal_template();">
-								<i class="fas fa-exchange-alt"></i>
-                                    &nbsp; Cambio Logueo
-                                </button>
-								<button  class="btn btn-dark btn-6 d-sm-none btn-icon" onclick="abrir_modal_template();">
-								<i class="fas fa-exchange-alt"></i>
-                                </button>
+								<!-- Botón de Opciones -->
+								<button class="btn btn-dark btn-5 d-none d-sm-inline-block"
+									onclick="abrir_modal_template();">
+									<i class="fas fa-exchange-alt"></i>
+									&nbsp; Cambio Logueo
+								</button>
+								<button class="btn btn-dark btn-6 d-sm-none btn-icon" onclick="abrir_modal_template();">
+									<i class="fas fa-exchange-alt"></i>
+								</button>
 
-								<a href="<?= base_url('login/salir') ?>" class="btn btn-primary btn-5 d-none d-sm-inline-block">
+								<a href="<?= base_url('login/salir') ?>"
+									class="btn btn-primary btn-5 d-none d-sm-inline-block">
 									<i class="fa-duotone fa-solid fa-right-to-bracket"></i>
 									&nbsp; Cerrar sesión
 								</a>
-								<a href="<?= base_url('login/salir') ?>" class="btn btn-primary btn-6 d-sm-none btn-icon" >
-								<i class="fa-duotone fa-solid fa-right-to-bracket"></i>
+								<a href="<?= base_url('login/salir') ?>"
+									class="btn btn-primary btn-6 d-sm-none btn-icon">
+									<i class="fa-duotone fa-solid fa-right-to-bracket"></i>
 								</a>
 
 							</div>
@@ -73,47 +88,44 @@
 				</div>
 			</div>
 			<!-- Page body -->
-			<?= $this->renderSection('content');?>
-			
+			<?= $this->renderSection('content'); ?>
+
 			<!-- Modal de Opciones -->
-			<div class="modal fade" id="mdltemplate" name="mdltemplate" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog " role="document">
+			<div class="modal modal-blur fade" tabindex="-1" role="dialog" id="mdlcambio" name="mdlcambio">
+				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title">Cambio logueo</h5>
+							<h5 id="lbltitulo" name="lbltitulo" class="modal-title">Cambiar Empresa</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							<div class="mb-3">
-								<label class="form-label">EMPRESA</label>
-								<select class="form-select" id="cmbempresa" name="cmbempresa">
-									<option value="">xd</option>
-
-								</select>
-							</div>
-							<div class="mb-3">
-								<label class="form-label">SUCURSAL</label>
-								<select class="form-select" id="cmbsucursal" name="cmbsucursal">
-									<option value="">xd</option>
-									<
-								</select>
-							</div>
-							<div class="mb-3">
-								<label class="form-label">ALMACEN</label>
-								<select class="form-select" id="cmbalmacen" name="cmbalmacen">
-									<option value="">MODO xd</option>
-									
-								</select>
+							<div class="modal-body">
+								<div class="mb-3">
+									<label class="form-label"><i class="fa-solid fa-building"></i>&nbsp;Empresa</label>
+									<select id="cmbempresas" name="cmbempresas" class="form-select"></select>
+								</div>
+								<div class="mb-3">
+									<label class="form-label"><i class="fa-solid fa-industry"></i>&nbsp;Sucursal</label>
+									<select id="cmbsucursal" name="cmbsucursal" class="form-select"></select>
+								</div>
+								<div class="mb-3">
+									<label class="form-label"><i class="fa-solid fa-warehouse"></i>&nbsp;Almacen</label>
+									<select id="cmbalmacen" name="cmbalmacen" class="form-select"></select>
+								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-							<button type="button" class="btn btn-primary">Cambio</button>
+							<button type="button" class="btn me-auto" data-bs-dismiss="modal">
+								Cancelar
+							</button>
+							<button class="btn btn-danger btn-5 ms-auto" id="btnguardar" name="btnguardar"
+								onclick="cambio_empresa()">
+								<i class="fas fa-exchange-alt"></i> &nbsp; Cambiar
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-
 			<footer class="footer footer-transparent d-print-none">
 				<div class="container-xl">
 					<div class="row text-center align-items-center flex-row-reverse">
@@ -169,21 +181,18 @@
 	<!-- Tabler Core -->
 
 	<script src="<?= base_url('public/dist/js/tabler.min.js?1738096685') ?>" defer></script>
-	<script src="<?= base_url('public/dist/libs/jquery/jquery-3.7.1.min.js') ?>" ></script>
+	<script src="<?= base_url('public/dist/libs/jquery/jquery-3.7.1.min.js') ?>"></script>
 
 	<script src="<?= base_url('public/dist/js/paginas/generales.js') ?>" defer></script>
 
 	<script src="<?= base_url('public/dist/js/demo.min.js?1738096685') ?>" defer></script>
 	<script src="<?= base_url('public/dist/libs/sweetalert2/dist/sweetalert2.js') ?>"> </script>
-	<script src="<?= base_url('public/dist/js/paginas/template.js') ?>"> </script>
-	<script>
-    var codalmacen = "<?= session()->get('codigoalmacen') ?? 'NL' ?>";
 
-  </script>
+	<script>var codalmacen = "<?= session()->get('codigoalmacen') ?? 'NL' ?>";</script>
 	<script> const URL_PY = "<?= base_url(); ?>"; </script>
-	<?= $this->renderSection('scripts');?>
+	<?= $this->renderSection('scripts'); ?>
 
-	
+
 </body>
 
 </html>

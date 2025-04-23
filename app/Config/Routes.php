@@ -18,7 +18,6 @@ $routes->group('login',function($routes){
     $routes->get('select_alm','AlmacenController::almacen_x_suc');
     $routes->post('ingresar', 'LoginController::logueo_ingreso');
     $routes->get('salir', 'LoginController::salir');
-    $routes->get('almxsucursallg', 'AccesoController::almacen_x_acceso');
 });
 
 $routes->group('',['filter'=>'AuthFilter'], function($routes){
@@ -115,6 +114,7 @@ $routes->group('clientes',['filter'=>'CambioFilter'],function($routes){
     $routes->get('cmbdistrito','ClientesController::get_distrito_x_prov_dep');
     $routes->get('sunat','ApiController::buscar_RUC');
     $routes->get('reniec','ApiController::buscar_DNI');
+    $routes->get('busc_clientes', 'Clientes::busc_clientes');
 });
 
 $routes->group('report',['filter'=>'CambioFilter'],function($routes){
@@ -127,6 +127,7 @@ $routes->group('report',['filter'=>'CambioFilter'],function($routes){
 $routes->group('cambio',['filter'=>'CambioFilter'],function($routes){
     $routes->post('empresa','AccesoController::get_empresas');
     $routes->post('sucursal','AccesoController::get_sucursales');
+    $routes->post('almacen', 'AccesoController::almacen_x_acceso');
+    $routes->post('ingresar','AccesoController::accesoalmacen');
 });
 
-$routes->get('clientes/busc_clientes', 'Clientes::busc_clientes');
